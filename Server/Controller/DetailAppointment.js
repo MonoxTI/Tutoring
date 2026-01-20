@@ -1,13 +1,13 @@
 import {
   AppointmentModel,
   AppointmentDetailsModel,
-  UserModel,
 } from "../Models/DB.js";
 
 // GET /api/appointments/:id
 export const getAppointmentDetails = async (req, res) => {
   const { id } = req.params;
 
+  // Validate appointment ID presence
   if (!id) {
     return res.status(400).json({
       success: false,
@@ -15,26 +15,10 @@ export const getAppointmentDetails = async (req, res) => {
     });
   }
 
-  // Check authentication
-  if (!req.user || !req.user.id) {
-    return res.status(401).json({
-      success: false,
-      message: "Authentication required",
-    });
-  }
-
-  // Email validation
-  const emailRegex = /^\S+@\S+\.\S+$/;
-  if (!emailRegex.test(Email)) {
-    return res.status(400).json({
-      success: false,
-      message: "Invalid email format",
-    });
-  }
-
   try {
-    // 1. Find the appointment
+    // Find the appointment by ID
     const appointment = await AppointmentModel.findById(id);
+    
     if (!appointment) {
       return res.status(404).json({
         success: false,
@@ -42,58 +26,60 @@ export const getAppointmentDetails = async (req, res) => {
       });
     }
 
-    // 2. Find associated payment details (optional)
-    const paymentDetails = await AppointmentDetailsModel.findOne({
-      userId: appointment.userId,
-    });
-
-    /* 3. Fetch user info (optional)
-    Will be added to the dashboad
-    const user = await UserModel.findById(appointment.userId).select(
-      "username email"
-
-      
-    if (user) {
-      responseData.user = {
-        username: user.username,
-        email: user.email,
-      };
+    // Authorization: Ensure the logged-in user owns this appointment
+    if (!appointment.userId.equals(req.user.id)) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to view this appointment",
+      });
     }
 
-    );
-    */
+    // Fetch associated payment details for THIS specific appointment
+    const paymentDetails = await AppointmentDetailsModel.findOne({
+      appointmentId: appointment._id, // Fixed: query by appointmentId, not userId
+    });
 
-    // 4. Format response
+    // Format response data
     const responseData = {
       appointment: {
-        _id: appointment._id.toString(),
-        FullName: appointment.FullName,
-        Email: appointment.Email,
-        Number: appointment.Number,
+        id: appointment._id.toString(),
+        fullName: appointment.FullName,
+        email: appointment.Email,
+        phoneNumber: appointment.Number,
         package: appointment.package,
-        date: appointment.date.toISOString().split("T")[0], // YYYY-MM-DD
+        date: appointment.date ? new Date(appointment.date).toISOString().split("T")[0] : null,
         tutor: appointment.tutor,
+        createdAt: appointment.createdAt,
+        updatedAt: appointment.updatedAt,
       },
     };
 
+    // Include payment details if they exist
     if (paymentDetails) {
       responseData.paymentDetails = {
-        PaymentStatus: paymentDetails.PaymentStatus,
-        Performance: paymentDetails.Performance,
-        TransactionID: paymentDetails.TransactionID,
-        AmountPaid: paymentDetails.AmountPaid,
+        paymentStatus: paymentDetails.PaymentStatus,
+        performance: paymentDetails.Performance,
+        transactionId: paymentDetails.TransactionID,
+        amountPaid: paymentDetails.AmountPaid,
         invoiceNumber: paymentDetails.invoiceNumber,
-        Note: paymentDetails.Note,
+        note: paymentDetails.Note,
       };
     }
 
     return res.status(200).json({
       success: true,
       message: "Appointment details retrieved successfully",
+      data: responseData,
     });
-  } catch (error) {
-    console.error("Error fetching appointment details:", error);
 
+  } catch (error) {
+    console.error("Error fetching appointment details:", {
+      appointmentId: id,
+      userId: req.user?.id,
+      error: error.message,
+    });
+
+    // Handle invalid MongoDB ObjectId format
     if (error.name === "CastError") {
       return res.status(400).json({
         success: false,
@@ -101,6 +87,7 @@ export const getAppointmentDetails = async (req, res) => {
       });
     }
 
+    // General server error
     return res.status(500).json({
       success: false,
       message: "Internal server error",

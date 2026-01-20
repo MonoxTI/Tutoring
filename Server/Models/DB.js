@@ -26,10 +26,10 @@ UserSchema.methods.comparePassword = async function (candidatePassword) {
 /* ─── Appointment Schema ────────────────────────────────── */
 
 const AppointmentSchema = new Schema({
-  userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+  userId: { type: Schema.Types.ObjectId, ref: "User" },
   FullName: { type: String, required: true },
   Email: { type: String, required: true },
-  Number: { type: Number, required: true },
+  Number: { type: String, required: true },
   package: { type: String, required: true },
   date: { type: Date, required: true },
   tutor: { type: String, required: true }
