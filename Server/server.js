@@ -1,10 +1,15 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
-import router from "./Routes/routes.js";
+import router from "./Routes/route.js";
 import connectDB from "./Config/DBConnect.js";
 
-dotenv.config();
+
+
+if (!process.env.MONGO_URI) {
+  throw new Error("MONGODB_URI environment variable is required");
+}
 
 const app = express();
 const PORT = process.env.PORT || 5000;

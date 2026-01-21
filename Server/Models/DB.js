@@ -8,15 +8,28 @@ const { Schema } = mongoose;
 
 const UserSchema = new Schema({
   username: { type: String, required: true, unique: true },
-  email: { type: String, required: true, unique: true },
+  email: {
+  type: String,
+  required: true,
+  unique: true,
+  lowercase: true,
+  trim: true
+}
+,
   password: { type: String, required: true }
 });
 
 // Hash password before save
-UserSchema.pre("save", async function () {
-  if (!this.isModified("password")) return;
-  this.password = await bcrypt.hash(this.password, 12);
+UserSchema.pre("save", async function (next) {
+  try {
+    if (!this.isModified("password")) return next();
+    this.password = await bcrypt.hash(this.password, 12);
+    next();
+  } catch (err) {
+    next(err);
+  }
 });
+
 
 // Compare password method
 UserSchema.methods.comparePassword = async function (candidatePassword) {
@@ -26,26 +39,27 @@ UserSchema.methods.comparePassword = async function (candidatePassword) {
 /* ─── Appointment Schema ────────────────────────────────── */
 
 const AppointmentSchema = new Schema({
-  userId: { type: Schema.Types.ObjectId, ref: "User" },
-  FullName: { type: String, required: true },
-  Email: { type: String, required: true },
-  Number: { type: String, required: true },
-  package: { type: String, required: true },
+  fullName: { type: String, required: true },
+  email: { type: String, required: true, lowercase: true, trim: true },
+  phoneNumber: { type: String, required: true },
+  packageName: { type: String, required: true },
   date: { type: Date, required: true },
   tutor: { type: String, required: true }
-});
+}, { timestamps: true });
+
 
 /* ─── Appointment Details Schema ────────────────────────── */
 
 const AppointmentDetailsSchema = new Schema({
-  userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-  PaymentStatus: { type: String, required: true },
+  appointmentId: { type: Schema.Types.ObjectId, ref: "Appointment", required: true },
+  PaymentStatus: { type: String, enum: ["pending", "paid", "failed"], required: true },
   Performance: { type: String, required: true },
   TransactionID: { type: String, required: true },
   AmountPaid: { type: Number, required: true },
-  invoiceNumber: { type: String, required: true },
-  Note: { type: String }
-});
+  invoiceNumber: { type: String, required: true, unique: true },
+  Note: { type: String, trim: true }
+}, { timestamps: true });
+
 
 /* ─── Models ────────────────────────────────────────────── */
 

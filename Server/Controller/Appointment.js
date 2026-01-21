@@ -4,74 +4,45 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const createAppointment = async (req, res) => {
   const {
-    FullName,
-    Email,
-    Number,
-    package: selectedPackage,
-    Date: appointmentDate,
+    fullName,
+    email,
+    phoneNumber,
+    packageName,
+    date: appointmentDate,
     tutor,
-    // Optional: accept userId from frontend if needed
     userId,
   } = req.body;
 
   // Validate required fields
-  if (
-    !FullName?.trim() ||
-    !Email?.trim() ||
-    Number == null ||
-    !selectedPackage?.trim() ||
-    !appointmentDate ||
-    !tutor?.trim()
-  ) {
-    return res.status(400).json({
-      success: false,
-      message: "All fields are required",
-    });
+  if (!fullName?.trim() || !email?.trim() || !phoneNumber || !packageName?.trim() || !appointmentDate || !tutor?.trim()) {
+    return res.status(400).json({ success: false, message: "All fields are required" });
   }
 
   // Validate email
-  if (!emailRegex.test(Email)) {
-    return res.status(400).json({
-      success: false,
-      message: "Invalid email format",
-    });
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ success: false, message: "Invalid email format" });
   }
 
   // Validate phone
-  const phoneNumber = String(Number).replace(/\D/g, '');
-  if (phoneNumber.length < 9 || phoneNumber.length > 15) {
-    return res.status(400).json({
-      success: false,
-      message: "Invalid phone number",
-    });
+  const phoneNumberClean = String(phoneNumber).replace(/\D/g, '');
+  if (phoneNumberClean.length < 9 || phoneNumberClean.length > 15) {
+    return res.status(400).json({ success: false, message: "Invalid phone number" });
   }
 
-  // Parse date
+  // Validate date
   const parsedDate = new Date(appointmentDate);
-  if (isNaN(parsedDate.getTime())) {
-    return res.status(400).json({
-      success: false,
-      message: "Invalid date format",
-    });
-  }
-
+  if (isNaN(parsedDate.getTime())) return res.status(400).json({ success: false, message: "Invalid date format" });
   const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  if (parsedDate < today) {
-    return res.status(400).json({
-      success: false,
-      message: "Appointment date cannot be in the past",
-    });
-  }
+  today.setHours(0,0,0,0);
+  if (parsedDate < today) return res.status(400).json({ success: false, message: "Appointment date cannot be in the past" });
 
   try {
     const newAppointment = new AppointmentModel({
-      // If no userId is provided, store as null or omit (ensure schema allows it)
-      userId: userId || null, // or remove this line if schema doesn't require it
-      FullName: FullName.trim(),
-      Email: Email.trim().toLowerCase(),
-      Number: Number,
-      package: selectedPackage.trim(),
+      userId: userId || null,
+      fullName: fullName.trim(),
+      email: email.trim().toLowerCase(),
+      phoneNumber: phoneNumberClean,
+      packageName: packageName.trim(),
       date: parsedDate,
       tutor: tutor.trim(),
     });
@@ -82,11 +53,11 @@ export const createAppointment = async (req, res) => {
       success: true,
       message: "Appointment created successfully",
       data: {
-        _id: savedAppointment._id.toString(),
-        FullName: savedAppointment.FullName,
-        Email: savedAppointment.Email,
-        Number: savedAppointment.Number,
-        package: savedAppointment.package,
+        id: savedAppointment._id.toString(),
+        fullName: savedAppointment.fullName,
+        email: savedAppointment.email,
+        phoneNumber: savedAppointment.phoneNumber,
+        packageName: savedAppointment.packageName,
         date: savedAppointment.date.toISOString().split("T")[0],
         tutor: savedAppointment.tutor,
       },
@@ -100,6 +71,10 @@ export const createAppointment = async (req, res) => {
         message: "Validation failed",
         error: Object.values(error.errors).map(e => e.message),
       });
+    }
+
+    if (error.code === 11000) {
+      return res.status(400).json({ success: false, message: "Duplicate entry", error: error.keyValue });
     }
 
     return res.status(500).json({

@@ -2,23 +2,22 @@ import mongoose from "mongoose";
 
 const connectDB = async () => {
   try {
-    mongoose.connection.on("connected", () => console.log("Database connected"));
-    mongoose.connection.on("error", (err) =>
-      console.log(`Database connection error: ${err}`)
-    );
+    const mongoUri = process.env.MONGO_URI;
+    if (!mongoUri) throw new Error("MONGO_URI not set in .env");
 
-    if (!process.env.MONGO_URI) {
-      throw new Error("MONGO_URI not set in .env");
-    }
+    mongoose.connection.on("connected", () => console.log("MongoDB connected"));
+    mongoose.connection.on("error", (err) => console.error(`MongoDB connection error: ${err}`));
+    mongoose.connection.on("disconnected", () => console.log("MongoDB disconnected"));
 
-    // ✅ Modern Mongoose does NOT need useNewUrlParser or useUnifiedTopology
-    await mongoose.connect(process.env.MONGO_URI, {
-      dbName: "MERN", // optional
+    await mongoose.connect(mongoUri, {
+      dbName: "MERN",
+      autoIndex: true,      // good for dev, disable in prod
+      maxPoolSize: 10,
     });
 
-    console.log("MongoDB connection successful");
+    console.log("MongoDB connection established successfully");
   } catch (error) {
-    console.error("Failed to connect to MongoDB:", error.message);
+    console.error("Failed to connect to MongoDB:", error.stack);
     process.exit(1);
   }
 };

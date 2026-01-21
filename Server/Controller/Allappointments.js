@@ -1,6 +1,5 @@
 import { AppointmentModel } from "../Models/DB.js";
 
-// GET /api/appointments
 export const getAllAppointments = async (req, res) => {
   try {
     const appointments = await AppointmentModel.find()
@@ -14,14 +13,15 @@ export const getAllAppointments = async (req, res) => {
         count: appointments.length,
         appointments: appointments.map(apt => ({
           id: apt._id.toString(),
-          fullName: apt.FullName,
-          email: apt.Email,
-          phoneNumber: apt.Number,
-          package: apt.package,
-          date: apt.date,
+          fullName: apt.fullName,
+          email: apt.email,
+          phoneNumber: apt.phoneNumber,
+          packageName: apt.packageName,
+          date: apt.date?.toISOString().slice(0, 10) || null,
           tutor: apt.tutor,
           user: apt.userId, // Populated user info
           createdAt: apt.createdAt,
+          updatedAt: apt.updatedAt,
         })),
       },
     });
