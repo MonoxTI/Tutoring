@@ -2,9 +2,8 @@ import { AppointmentModel } from "../Models/DB.js";
 
 export const getAllAppointments = async (req, res) => {
   try {
-    const appointments = await AppointmentModel.find()
-      .sort({ date: -1 }) // Most recent first
-      .populate('userId', 'username email'); // Include user info (optional)
+    // Get all appointments, sorted by date descending
+    const appointments = await AppointmentModel.find().sort({ date: -1 });
 
     return res.status(200).json({
       success: true,
@@ -19,9 +18,8 @@ export const getAllAppointments = async (req, res) => {
           packageName: apt.packageName,
           date: apt.date?.toISOString().slice(0, 10) || null,
           tutor: apt.tutor,
-          user: apt.userId, // Populated user info
-          createdAt: apt.createdAt,
-          updatedAt: apt.updatedAt,
+          createdAt: apt.createdAt || null,
+          updatedAt: apt.updatedAt || null,
         })),
       },
     });
