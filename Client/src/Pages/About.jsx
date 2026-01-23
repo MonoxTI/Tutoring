@@ -21,10 +21,10 @@ export default function AboutFounder() {
           </p>
         </div>
 
-        {/* Right: Image with dark overlay + blockquote */}
+        {/* Right: Image + blockquote at bottom */}
         <div className="md:w-1/2 flex flex-col items-center md:items-end">
-          {/* Dark background container */}
-          <div className="bg-black/50 backdrop-blur-sm rounded-xl p-2 mb-3">
+          {/* Image with lighter background */}
+          <div className="bg-black/30 backdrop-blur-sm rounded-xl p-2">
             <img
               src={pic1}
               alt="Founder of Assembled Tutoring"
@@ -32,8 +32,8 @@ export default function AboutFounder() {
             />
           </div>
           
-          {/* Blockquote closer to image */}
-          <blockquote className="mt-2 italic text-blue-100 border-l-4 border-blue-300 pl-4 py-2">
+          {/* Blockquote directly below the image */}
+          <blockquote className="mt-4 text-center md:text-right italic text-blue-100 border-l-4 border-blue-300 pl-4 py-2 max-w-xs">
             “Mathematics is a language that requires understanding the fundamentals & the underlying basics of all its topics.”
           </blockquote>
         </div>
