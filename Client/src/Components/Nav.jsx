@@ -1,18 +1,27 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-//import LOGO from "../Assets/LOGO.png";
+import LOGO from "../Assets/LOGO.png";
 
 export default function Navbar() {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
 
   return (
-    <nav className="bg-gradient-to-r from-black via-blue-900 to-blue-500 text-white py-4 px-6 shadow-md border-b-2 border-white">
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
-         
-        {/* Logo / Title - LEFT */}
-        <h1 className="text-xl md:text-2xl font-bold text-white whitespace-nowrap">
+    <nav className="bg-gradient-to-r from-black via-blue-900 to-blue-500 text-white py-3 px-6 shadow-md border-b-2 border-white">
+      <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
+
+        {/* Logo - LEFT (compact size) */}
+        <Link to="/" className="flex items-center">
+          <img
+            src={LOGO}
+            alt="Assembled Tutoring"
+            className="h-15 w-auto object-contain" 
+          />
+          <h1 className="text-xl md:text-2xl font-bold text-white whitespace-nowrap">
           Assembled Tutoring
         </h1>
+        </Link>
+
+        
 
         {/* Navigation Links - RIGHT */}
         <div className="flex flex-wrap justify-center md:justify-end gap-2 md:gap-4 relative">

@@ -1,4 +1,5 @@
 import pic2 from "../assets/pic2.jpg";
+import pic4 from "../assets/pic4.jpg";
 export default function AboutMission() {
   return (
     <div className="min-h-screen bg-white text-gray-800 py-12 px-4">
@@ -32,9 +33,9 @@ export default function AboutMission() {
         {/* Image with imported asset */}
                 <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 max-w-2xl mx-auto">
                   <img
-                    src={pic1}
+                    src={pic2}
                     alt="Assembled Tutoring about"
-                    className="w-full h-auto object-cover"
+                    className="w-auto h-auto object-cover"
                   />
                 </div>
 
@@ -51,7 +52,15 @@ Engagement is crucial, constant practice leads to success. We have noted that te
 learners write weekly tests - they become more engaged with the work, they study weekly and personalized feedback on their
 test are sent to parents/ guardian(s)
                 </p>
+                <h3 className="text-xl md:text-2xl font-semibold mb-4">ADDItIONAL SERVICES</h3>
                   </div>
+                  <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 max-w-2xl mx-auto">
+                  <img
+                    src={pic4}
+                    alt="Assembled Tutoring about"
+                    className="w-auto h-auto object-cover"
+                  />
+                </div>
       </div>
   );
 }
