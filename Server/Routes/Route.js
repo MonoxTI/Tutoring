@@ -1,5 +1,5 @@
 import express from "express";
-//import {authenticate} from '../Middleware/JWT.js';
+//import authMiddleware from '../Middleware/JWT.js';
 import {createAppointment} from '../Controller/Appointment.js';
 //import { Login} from '../Controller/Login.js';
 //import { Register} from '../Controller/Register.js';
