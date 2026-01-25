@@ -10,9 +10,6 @@ export default function AboutMission() {
           <p className="text-lg leading-relaxed mb-6">
             The barrier encountered in learning is often not a lack of "logic," but a psychological block. 
             Our aim commences with addressing the Cognitive, Affective, and Metacognitive layers of learning.
-          </p>
-          
-          <p className="text-lg leading-relaxed mb-6">
             Simply, <strong>Psychological Transformation</strong> is a technique we use to psychologically infiltrate & remove 
             the thought(s) that certain subjects are unattainable (e.g., "Mathematics is hard"). Once the learner’s psychological 
             thoughts are realigned, constant engagement with the work is required.
@@ -30,37 +27,6 @@ export default function AboutMission() {
           </p>
 
         </div>
-        {/* Image with imported asset */}
-                <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 max-w-2xl mx-auto">
-                  <img
-                    src={pic2}
-                    alt="Assembled Tutoring about"
-                    className="w-auto h-auto object-cover"
-                  />
-                </div>
-
-                <div className="max-w-4xl mx-auto mt-6">
-                  <h4 className="text-xl md:text-2xl font-semibold mb-4">Why Psychometric test?</h4>
-                  <p className="text-lg leading-relaxed mb-6">
-To assess whether the learner is to the standard of their grade, by identifying their loopholes from past Grades, to ensure
-underlying principles are understood. We cannot move forward without addressing previous loopholes, a loopholed
-foundation collapses the next phase - the root problems from past grades.
-                  </p>
-                  <h4 className="text-xl md:text-2xl font-semibold mb-4">Why weekly Test?</h4>
-                  <p className="text-lg leading-relaxed">
-Engagement is crucial, constant practice leads to success. We have noted that teaching requires emphasis. Hence, when
-learners write weekly tests - they become more engaged with the work, they study weekly and personalized feedback on their
-test are sent to parents/ guardian(s)
-                </p>
-                <h3 className="text-xl md:text-2xl font-semibold mb-4">ADDItIONAL SERVICES</h3>
-                  </div>
-                  <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 max-w-2xl mx-auto">
-                  <img
-                    src={pic4}
-                    alt="Assembled Tutoring about"
-                    className="w-auto h-auto object-cover"
-                  />
-                </div>
       </div>
   );
 }

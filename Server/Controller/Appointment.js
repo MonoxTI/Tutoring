@@ -9,8 +9,7 @@ export const createAppointment = async (req, res) => {
     phoneNumber,
     packageName,
     date: appointmentDate,
-    tutor,
-    userId,
+    tutor
   } = req.body;
 
   // Validate required fields
@@ -38,7 +37,6 @@ export const createAppointment = async (req, res) => {
 
   try {
     const newAppointment = new AppointmentModel({
-      userId: userId || null,
       fullName: fullName.trim(),
       email: email.trim().toLowerCase(),
       phoneNumber: phoneNumberClean,

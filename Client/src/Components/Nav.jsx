@@ -6,22 +6,20 @@ export default function Navbar() {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
 
   return (
-    <nav className="bg-gradient-to-r from-black via-blue-900 to-blue-500 text-white py-3 px-6 shadow-md border-b-2 border-white">
-      <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
-
-        {/* Logo - LEFT (compact size) */}
-        <Link to="/" className="flex items-center">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-black via-blue-900 to-blue-800 text-white py-3 px-6 shadow-md border-b-2 border-white">
+      {/* Removed max-w-6xl mx-auto to allow full-left alignment */}
+      <div className="flex items-center justify-between gap-4">
+        {/* Logo + Name - LEFT (more left, bolder text) */}
+        <Link to="/" className="flex items-center gap-2">
           <img
             src={LOGO}
             alt="Assembled Tutoring"
-            className="h-15 w-auto object-contain" 
+            className="h-12 w-auto object-contain"
           />
-          <h1 className="text-xl md:text-2xl font-bold text-white whitespace-nowrap">
-          Assembled Tutoring
-        </h1>
+          <h1 className="text-xl md:text-2xl font-black text-white whitespace-nowrap tracking-tight">
+            Assembled Tutoring
+          </h1>
         </Link>
-
-        
 
         {/* Navigation Links - RIGHT */}
         <div className="flex flex-wrap justify-center md:justify-end gap-2 md:gap-4 relative">
@@ -61,11 +59,6 @@ export default function Navbar() {
             )}
           </div>
 
-          <Link to="/staff">
-            <button className="px-4 py-2 rounded-lg hover:bg-blue-800/70 transition-colors duration-200 font-medium whitespace-nowrap">
-              Staff
-            </button>
-          </Link>
           <Link to="/services">
             <button className="px-4 py-2 rounded-lg hover:bg-blue-800/70 transition-colors duration-200 font-medium whitespace-nowrap">
               Services
@@ -73,12 +66,12 @@ export default function Navbar() {
           </Link>
           <Link to="/bookings">
             <button className="px-4 py-2 rounded-lg hover:bg-blue-800/70 transition-colors duration-200 font-medium whitespace-nowrap">
-              Bookings
+              Bootcamp
             </button>
           </Link>
           <Link to="/alumni">
             <button className="px-4 py-2 rounded-lg hover:bg-blue-800/70 transition-colors duration-200 font-medium whitespace-nowrap">
-              Alumni
+              Career
             </button>
           </Link>
           <Link to="/contact">

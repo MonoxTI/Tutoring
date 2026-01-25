@@ -1,55 +1,53 @@
 import { useState } from "react";
 
 export default function Bookings() {
-  const [form, setForm] = useState({
-    FullName: "",
-    Email: "",
-    Number: "",
-    package: "",
-    Date: "",
+  const initialFormState = {
+    fullName: "",
+    email: "",
+    phoneNumber: "",
+    packageName: "",
+    date: "",
     tutor: ""
-  });
+  };
+
+  const [form, setForm] = useState(initialFormState);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
+    setForm((prev) => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent page reload
-
-    const token = localStorage.getItem("token");
-    if (!token) {
-      alert("Please log in to book a session.");
-      return;
-    }
+    e.preventDefault();
+    setLoading(true);
 
     try {
       const res = await fetch("http://localhost:5000/api/appointment", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
+          "Content-Type": "application/json"
         },
         body: JSON.stringify(form)
       });
 
       const data = await res.json();
-      alert(data.message);
 
-      if (data.success) {
-        setForm({
-          FullName: "",
-          Email: "",
-          Number: "",
-          package: "",
-          Date: "",
-          tutor: ""
-        });
+      if (!res.ok) {
+        alert(data.message || "Booking failed");
+        return;
       }
+
+      alert("Booking successful ✅");
+      setForm(initialFormState);
     } catch (error) {
       console.error("Booking error:", error);
-      alert("Failed to book session. Please try again.");
+      alert("Something went wrong. Try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -62,11 +60,11 @@ export default function Bookings() {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           {[
-            { label: "Full Name", name: "FullName", type: "text" },
-            { label: "Email", name: "Email", type: "email" },
-            { label: "Phone Number", name: "Number", type: "tel" },
-            { label: "Package", name: "package", type: "text" },
-            { label: "Date", name: "Date", type: "date" },
+            { label: "Full Name", name: "fullName", type: "text" },
+            { label: "Email", name: "email", type: "email" },
+            { label: "Phone Number", name: "phoneNumber", type: "tel" },
+            { label: "Package", name: "packageName", type: "text" },
+            { label: "Date", name: "date", type: "date" },
             { label: "Tutor", name: "tutor", type: "text" }
           ].map((field) => (
             <div key={field.name}>
@@ -80,10 +78,12 @@ export default function Bookings() {
                 id={field.name}
                 name={field.name}
                 type={field.type}
-                value={form[field.name]}
+                value={form[field.name] ?? ""}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg
+                           focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                           outline-none transition"
                 placeholder={`Enter your ${field.label.toLowerCase()}`}
               />
             </div>
@@ -91,9 +91,11 @@ export default function Bookings() {
 
           <button
             type="submit"
-            className="w-full bg-blue-900 hover:bg-blue-800 text-white font-medium py-2.5 px-4 rounded-lg transition duration-200 shadow-md hover:shadow-lg"
+            disabled={loading}
+            className={`w-full text-white font-medium py-2.5 px-4 rounded-lg transition
+              ${loading ? "bg-gray-400" : "bg-blue-900 hover:bg-blue-800"}`}
           >
-            Book Session
+            {loading ? "Booking..." : "Book Session"}
           </button>
         </form>
       </div>

@@ -9,7 +9,7 @@ export default function Contact() {
         <div className="space-y-6">
           <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-600">
             <p className="text-lg text-gray-700">
-              <span className="font-semibold">Email:</span> info@tutoring.co.za
+              <span className="font-semibold">Email:</span> assembledtutoring@gmail.com
             </p>
           </div>
 
