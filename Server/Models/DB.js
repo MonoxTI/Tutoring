@@ -20,13 +20,9 @@ const UserSchema = new Schema({
 });
 
 // Hash password before save
-UserSchema.pre("save", async function (next) {
-  try {
-    if (!this.isModified("password")) return next();
+UserSchema.pre("save", async function () {
+  if (this.isModified("password")) {
     this.password = await bcrypt.hash(this.password, 12);
-    next();
-  } catch (err) {
-    next(err);
   }
 });
 

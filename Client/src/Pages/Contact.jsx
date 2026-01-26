@@ -1,3 +1,6 @@
+// Contact.jsx
+import { Link } from "react-router-dom";
+
 export default function Contact() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white py-16 px-4">
@@ -24,6 +27,16 @@ export default function Contact() {
               <span className="font-semibold">Location:</span> Pretoria, Gauteng
             </p>
           </div>
+        </div>
+
+        {/* Admin Login Button */}
+        <div className="mt-12">
+          <Link
+            to="/login"
+            className="inline-block bg-blue-900 hover:bg-blue-800 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300 transform hover:scale-105"
+          >
+            Admin Login
+          </Link>
         </div>
       </div>
     </div>

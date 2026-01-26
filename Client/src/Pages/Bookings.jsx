@@ -49,8 +49,8 @@ export default function Bookings() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-50 to-white px-4">
-      <div className="w-full max-w-xl bg-white rounded-xl shadow-xl p-6 md:p-8">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white px-4 pt-12 pb-8">
+      <div className="w-full max-w-xl mx-auto bg-white rounded-xl shadow-xl p-6 md:p-8">
         <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
           Book an Appointment
         </h1>
