@@ -12,53 +12,62 @@ export default function Bookings() {
 
   const [form, setForm] = useState(initialFormState);
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({
-      ...prev,
-      [name]: value
-    }));
+    setForm(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setMessage(null);
 
     try {
       const res = await fetch("http://localhost:5000/api/appointment", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form)
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        alert(data.message || "Booking failed");
+        setMessage({ type: "error", text: data.message || "Booking failed" });
         return;
       }
 
-      alert("Booking successful ✅");
+      setMessage({ type: "success", text: "Appointment booked successfully ✅" });
       setForm(initialFormState);
-    } catch (error) {
-      console.error("Booking error:", error);
-      alert("Something went wrong. Try again.");
+    } catch (err) {
+      console.error(err);
+      setMessage({ type: "error", text: "Server error. Try again later." });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white py-12 px-4">
-      <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-lg p-6 md:p-8">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-800 text-center mb-6">
-          Book a Session
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-50 to-white px-4">
+      <div className="w-full max-w-xl bg-white rounded-xl shadow-xl p-6 md:p-8">
+        <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
+          Book an Appointment
         </h1>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        {message && (
+          <div
+            className={`mb-4 text-sm text-center px-4 py-2 rounded-lg ${
+              message.type === "success"
+                ? "bg-green-100 text-green-700"
+                : "bg-red-100 text-red-700"
+            }`}
+          >
+            {message.text}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-4">
           {[
             { label: "Full Name", name: "fullName", type: "text" },
             { label: "Email", name: "email", type: "email" },
@@ -66,25 +75,19 @@ export default function Bookings() {
             { label: "Package", name: "packageName", type: "text" },
             { label: "Date", name: "date", type: "date" },
             { label: "Tutor", name: "tutor", type: "text" }
-          ].map((field) => (
+          ].map(field => (
             <div key={field.name}>
-              <label
-                htmlFor={field.name}
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
+              <label className="block text-sm font-medium text-gray-700 mb-1">
                 {field.label}
               </label>
               <input
-                id={field.name}
-                name={field.name}
                 type={field.type}
-                value={form[field.name] ?? ""}
+                name={field.name}
+                value={form[field.name]}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg
-                           focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                           outline-none transition"
-                placeholder={`Enter your ${field.label.toLowerCase()}`}
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                placeholder={`Enter ${field.label.toLowerCase()}`}
               />
             </div>
           ))}
@@ -92,10 +95,13 @@ export default function Bookings() {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full text-white font-medium py-2.5 px-4 rounded-lg transition
-              ${loading ? "bg-gray-400" : "bg-blue-900 hover:bg-blue-800"}`}
+            className={`w-full py-2.5 rounded-lg text-white font-semibold transition ${
+              loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-blue-900 hover:bg-blue-800"
+            }`}
           >
-            {loading ? "Booking..." : "Book Session"}
+            {loading ? "Booking..." : "Book Appointment"}
           </button>
         </form>
       </div>

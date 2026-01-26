@@ -9,6 +9,8 @@ import Alumni from "./Pages/Alumni.jsx";
 import Contact from "./Pages/Contact.jsx";
 import Home from "./Pages/Home.jsx";
 import Footer from "./Components/Footer.jsx";
+import AllAppointments from "./Pages/AllApointments.jsx";
+import AppointmentDetails from "./Pages/Detail.jsx";
 
 function App() {
   
@@ -26,6 +28,8 @@ function App() {
         <Route path="/bookings" element={<Bookings />} />
         <Route path="/alumni" element={<Alumni />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/appointments" element={<AllAppointments />} />
+        <Route path="/detail/:id" element={<AppointmentDetails />} />
       </Routes>
       <Footer />
     </BrowserRouter>

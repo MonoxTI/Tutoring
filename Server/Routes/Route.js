@@ -8,17 +8,17 @@ import { getAllAppointments } from '../Controller/AllAppointments.js';
 const router = express.Router();
 
 // 🔍 ADD THIS DEBUG CODE
-console.log('✅ Routes file loaded');
+console.log(' Routes file loaded');
 console.log('Register function:', typeof Register);
 console.log('Login function:', typeof Login);
 
 router.post('/login', (req, res, next) => {
-  console.log('🎯 Login route hit');
+  console.log(' Login route hit');
   Login(req, res, next);
 });
 
 router.post('/register', (req, res, next) => {
-  console.log('🎯 Register route hit');
+  console.log(' Register route hit');
   Register(req, res, next);
 });
 

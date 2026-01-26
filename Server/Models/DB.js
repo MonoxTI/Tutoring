@@ -16,7 +16,7 @@ const UserSchema = new Schema({
   trim: true
 }
 ,
-  password: { type: String, required: true }
+  password: { type: String, required: true, select: false },
 });
 
 // Hash password before save
