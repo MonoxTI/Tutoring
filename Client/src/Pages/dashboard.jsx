@@ -86,20 +86,6 @@ export default function Dashboard() {
             <p className="text-gray-600">See complete list of scheduled sessions</p>
           </button>
 
-          <button
-            onClick={handleViewDetails}
-            className="bg-white hover:bg-blue-50 border border-blue-200 rounded-xl shadow-md p-6 text-left transition-all hover:shadow-lg"
-          >
-            <div className="flex items-center mb-3">
-              <div className="bg-blue-100 p-3 rounded-lg mr-4">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-gray-800">View Appointment Details</h3>
-            </div>
-            <p className="text-gray-600">Check payment status and performance metrics</p>
-          </button>
         </div>
 
         {/* Error Message */}

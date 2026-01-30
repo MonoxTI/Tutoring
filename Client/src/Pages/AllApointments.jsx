@@ -60,12 +60,7 @@ export default function AllAppointments() {
                 <p><strong>Date:</strong> {apt.date}</p>
                 <p><strong>Tutor:</strong> {apt.tutor}</p>
 
-                <a
-                  href={`/appointments/${apt.id}`}
-                  className="text-blue-700 underline mt-3 inline-block hover:text-blue-900"
-                >
-                  View Details →
-                </a>
+                
               </div>
             ))}
           </div>
